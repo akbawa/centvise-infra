@@ -80,6 +80,9 @@ services:
     logging: *default-logging
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m
+      # nginx-unprivileged renders the BACKEND_UPSTREAM template here during
+      # startup. Keep the image read-only and allow only this in-memory path.
+      - /etc/nginx/conf.d:rw,noexec,nosuid,nodev,size=1m,mode=0755,uid=101,gid=101
     deploy:
       resources:
         limits:
