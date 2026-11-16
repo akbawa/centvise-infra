@@ -53,6 +53,11 @@ services:
 
   frontend:
     image: ${FRONTEND_IMAGE_REPOSITORY:?Set FRONTEND_IMAGE_REPOSITORY}:${FRONTEND_IMAGE_TAG:?Set FRONTEND_IMAGE_TAG}
+    environment:
+      # The React bundle calls /api on this frontend. Its Nginx container
+      # removes that gateway prefix and forwards requests over Docker's
+      # private network to the backend service.
+      BACKEND_UPSTREAM: http://backend:4000
     read_only: true
     security_opt:
       - no-new-privileges:true
