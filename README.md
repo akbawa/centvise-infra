@@ -159,12 +159,14 @@ environment's `docker.env`. If necessary, prepare it once as an administrator:
 ```bash
 sudo mkdir -p /opt/centvise-manager/data/stag/backend-files
 sudo chown -R 10001:10001 /opt/centvise-manager/data/stag/backend-files
-sudo chmod 750 /opt/centvise-manager/data/stag/backend-files
+sudo chmod 700 /opt/centvise-manager/data/stag/backend-files
 ```
 
-The first deployment creates all currently used child directories. The
-backend container is read-only except for this bind mount and a bounded `/tmp`
-tmpfs. Back up `backend-files` together with MongoDB for a consistent restore.
+The backend creates its required child directories as UID/GID `10001:10001`.
+The deployment user does not require access inside this application-owned
+directory. The backend container is read-only except for this bind mount and a
+bounded `/tmp` tmpfs. Back up `backend-files` together with MongoDB for a
+consistent restore.
 
 For the first production migration, stop the old backend and copy every
 existing runtime directory into the production root without renaming its

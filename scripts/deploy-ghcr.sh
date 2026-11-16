@@ -60,15 +60,8 @@ prepare_storage() {
   local expected_owner="${BACKEND_UID}:${BACKEND_GID}"
   local actual_owner=""
 
-  mkdir -p \
-    "$storage_root/uploads" \
-    "$storage_root/local_payroll_pdf" \
-    "$storage_root/local_report_pdf" \
-    "$storage_root/local_support_chat" \
-    "$storage_root/combined_pdfs" \
-    "$storage_root/payrollpdfs" \
-    "$storage_root/remittanceReports" \
-    "$storage_root/temp_pdfs"
+  [[ -d "$storage_root" ]] || \
+    error "Storage root does not exist: $storage_root. Create it as an administrator and assign it to $expected_owner."
 
   if actual_owner="$(stat -c '%u:%g' "$storage_root" 2>/dev/null)"; then
     :
